@@ -2,210 +2,19 @@
   <head>
   <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   <script>
-    var json = {
-      "uri": "/asdasd/sgsgfg/",
-      "method": "PUT",
-      "request" : {
-        headers : {
-          "x-request-id": "%XLJJ",
-          "x-service": "colin"
-        },
-        body: {
-          "gateId": "942384",
-          "coordinates": [{
-            "longitude": 9.13123123,
-            "latitude": 47.23424234
-          },
-          {
-            "longitude": 9.13123123,
-            "latitude": 47.23424234
-          },
-          {
-            "longitude": 9.13123123,
-            "latitude": 47.23424234
-          },
-          {
-            "longitude": 9.13123123,
-            "latitude": 47.23424234
-          },
-          {
-            "longitude": 9.13123123,
-            "latitude": 47.23424234
-          },
-          {
-            deep: {
-              deep: {
-                  deep: {
-                    deep: {
-                      deep: {
-                        "hello": "world"
-                      }
-                    }
-                  }
-                }
-              }
+    function prettyson(element, obj, depth, name, first, sep) {
+        function roundPrevious(element, depth) {
+            var prev = element.children().last().prev();
+            var cursor = prev;
+            var i=0;
+            while(cursor.children().length) {
+                cursor = cursor.children().first();
+                i++;
             }
-          
-        ]
-        }        
-      },
-      "response": {
-        "headers": {}
-      }
-    }
-
-    var json2={
-    "id": "http://json-schema.org/draft-04/schema#",
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "Core schema meta-schema",
-    "definitions": {
-        "schemaArray": {
-            "type": "array",
-            "minItems": 1,
-            "items": { "$ref": "#" }
-        },
-        "positiveInteger": {
-            "type": "integer",
-            "minimum": 0
-        },
-        "positiveIntegerDefault0": {
-            "allOf": [ { "$ref": "#/definitions/positiveInteger" }, { "default": 0 } ]
-        },
-        "simpleTypes": {
-            "enum": [ "array", "boolean", "integer", "null", "number", "object", "string" ]
-        },
-        "stringArray": {
-            "type": "array",
-            "items": { "type": "string" },
-            "minItems": 1,
-            "uniqueItems": true
+            if(i >= depth) {
+                prev.find(".prettyson-box").addClass("prettyson-last");
+            }
         }
-    },
-    "type": "object",
-    "properties": {
-        "id": {
-            "type": "string",
-            "format": "uri"
-        },
-        "$schema": {
-            "type": "string",
-            "format": "uri"
-        },
-        "title": {
-            "type": "string"
-        },
-        "description": {
-            "type": "string"
-        },
-        "default": {},
-        "multipleOf": {
-            "type": "number",
-            "minimum": 0,
-            "exclusiveMinimum": true
-        },
-        "maximum": {
-            "type": "number"
-        },
-        "exclusiveMaximum": {
-            "type": "boolean",
-            "default": false
-        },
-        "minimum": {
-            "type": "number"
-        },
-        "exclusiveMinimum": {
-            "type": "boolean",
-            "default": false
-        },
-        "maxLength": { "$ref": "#/definitions/positiveInteger" },
-        "minLength": { "$ref": "#/definitions/positiveIntegerDefault0" },
-        "pattern": {
-            "type": "string",
-            "format": "regex"
-        },
-        "additionalItems": {
-            "anyOf": [
-                { "type": "boolean" },
-                { "$ref": "#" }
-            ],
-            "default": {}
-        },
-        "items": {
-            "anyOf": [
-                { "$ref": "#" },
-                { "$ref": "#/definitions/schemaArray" }
-            ],
-            "default": {}
-        },
-        "maxItems": { "$ref": "#/definitions/positiveInteger" },
-        "minItems": { "$ref": "#/definitions/positiveIntegerDefault0" },
-        "uniqueItems": {
-            "type": "boolean",
-            "default": false
-        },
-        "maxProperties": { "$ref": "#/definitions/positiveInteger" },
-        "minProperties": { "$ref": "#/definitions/positiveIntegerDefault0" },
-        "required": { "$ref": "#/definitions/stringArray" },
-        "additionalProperties": {
-            "anyOf": [
-                { "type": "boolean" },
-                { "$ref": "#" }
-            ],
-            "default": {}
-        },
-        "definitions": {
-            "type": "object",
-            "additionalProperties": { "$ref": "#" },
-            "default": {}
-        },
-        "properties": {
-            "type": "object",
-            "additionalProperties": { "$ref": "#" },
-            "default": {}
-        },
-        "patternProperties": {
-            "type": "object",
-            "additionalProperties": { "$ref": "#" },
-            "default": {}
-        },
-        "dependencies": {
-            "type": "object",
-            "additionalProperties": {
-                "anyOf": [
-                    { "$ref": "#" },
-                    { "$ref": "#/definitions/stringArray" }
-                ]
-            }
-        },
-        "enum": {
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true
-        },
-        "type": {
-            "anyOf": [
-                { "$ref": "#/definitions/simpleTypes" },
-                {
-                    "type": "array",
-                    "items": { "$ref": "#/definitions/simpleTypes" },
-                    "minItems": 1,
-                    "uniqueItems": true
-                }
-            ]
-        },
-        "allOf": { "$ref": "#/definitions/schemaArray" },
-        "anyOf": { "$ref": "#/definitions/schemaArray" },
-        "oneOf": { "$ref": "#/definitions/schemaArray" },
-        "not": { "$ref": "#" }
-    },
-    "dependencies": {
-        "exclusiveMaximum": [ "maximum" ],
-        "exclusiveMinimum": [ "minimum" ]
-    },
-    "default": {}
-}
-  
-    function prettyson(element, obj, depth, name, first, sep) {        
         if(typeof element == "string") {
           element = $("#"+element);
         }
@@ -218,14 +27,14 @@
         }
         var parent;
         if(name || typeof obj != "object") {
-          for(i = 0; i<depth; i++) {
-            var content = $("<div>").addClass("prettyson-box").addClass("prettyson-depth-"+i);//.height(72-6*i);
+          for(var i = 0; i<depth; i++) {
+            var content = $("<div>").addClass("prettyson-box").addClass("prettyson-depth-"+i);
             box.append(content);
             box = content;         
             if(first) {
               box.addClass("prettyson-first");
             }
-            if(i == depth-2 && sep) {
+            if(i >= 1 && i == depth-2 && sep) {
               box.addClass("prettyson-sep");
             }
           }
@@ -234,8 +43,13 @@
           box.append($("<span>").addClass("prettyson-name").text(name));
         }
         if(typeof obj == "object") {
+            if(name) {
+                roundPrevious(element, depth);
+            }
             console.log(obj);
-            box.addClass("prettyson-sep");                     
+            if(box != element && depth > 1) {
+                box.addClass("prettyson-sep");
+            }
             var firstNow = true;
             if(Array.isArray(obj)) {
               $.each(obj, function(k,v) {
@@ -248,7 +62,13 @@
                 firstNow = false;
               });
             }
-        } else {               
+            var toClose = element.children().last();
+            for(var i=0; i<depth-2; i++) {
+                toClose = toClose.children().first();
+            }
+            toClose.find(".prettyson-box").addClass("prettyson-close");
+        } else {
+            roundPrevious(element, depth+1);
             if(name) {
               box.append("<br>");
             }
@@ -258,13 +78,27 @@
     }
     
     $(function() {
-      prettyson("prettyson", json);
-      prettyson("prettyson", json2);
+        $.each(samples, function(k, v) {
+            var elt = $("<div>").addClass("sample");
+            prettyson(elt, v);
+            $("#prettyson").append(elt);
+        })
     });
   </script>
-  <style>    
+  <style>
+     body {
+        font-family: "Droid Sans", tahoma, helvetica;
+        background: gainsboro;
+     }
+     .sample {
+         background: white;
+         display: inline-block;
+         border-radius: 5px 5px 5px 5px;
+         width: 100%;
+         clear: both;
+         margin-bottom: 12px;
+     }
     .prettyson-box {
-      font-family: "Droid Sans", tahoma, helvetica;
       font-size: 12px;
       float: left;
       padding-top: 3px;
@@ -308,10 +142,22 @@
     .prettyson-first {
       border-bottom-left-radius: 5px;
     }
+    .prettyson-close {
+        margin-right: 3px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    .prettyson-last {
+        border-bottom-right-radius: 5px;
+    }
     .prettyson-name {
+        font-size: 90%;
       padding-left: 6px;
       padding-right: 6px;
       color: gray;      
+    }
+    .prettyson-leaf .prettyson-name {
+        font-size: 80%;
     }
     .prettyson-value {
       padding-left: 6px;
@@ -329,7 +175,671 @@
   </head>
 <body>
 <div id="prettyson">
-<div id="prettyson2">
 </div>
+<script>
+var samples = [
+    {
+        "firstName": "John",
+        "lastName": "Smith",
+        "age": 25,
+        "address":
+        {
+            "streetAddress": "21 2nd Street",
+            "city": "New York",
+            "state": "NY",
+            "postalCode": "10021"
+        },
+        "phoneNumber":
+                [
+                    {
+                        "type": "home",
+                        "number": "212 555-1234"
+                    },
+                    {
+                        "type": "fax",
+                        "number": "646 555-4567"
+                    }
+                ]
+    },
+    {
+        "name":"Product",
+        "properties":
+        {
+            "id":
+            {
+                "type":"number",
+                "description":"Product identifier",
+                "required":true
+            },
+            "name":
+            {
+                "description":"Name of the product",
+                "type":"string",
+                "required":true
+            },
+            "price":
+            {
+                "type":"number",
+                "minimum":0,
+                "required":true
+            },
+            "tags":
+            {
+                "type":"array",
+                "items":
+                {
+                    "type":"string"
+                }
+            }
+        }
+    },
+    {"widget": {
+        "debug": "on",
+        "window": {
+            "title": "Sample Konfabulator Widget",
+            "name": "main_window",
+            "width": 500,
+            "height": 500
+        },
+        "image": {
+            "src": "Images/Sun.png",
+            "name": "sun1",
+            "hOffset": 250,
+            "vOffset": 250,
+            "alignment": "center"
+        },
+        "text": {
+            "data": "Click Here",
+            "size": 36,
+            "style": "bold",
+            "name": "text1",
+            "hOffset": 250,
+            "vOffset": 100,
+            "alignment": "center",
+            "onMouseUp": "sun1.opacity = (sun1.opacity / 100) * 90;"
+        }, "a": "b"
+
+    }},
+    [
+        {
+            "id": "0001",
+            "type": "donut",
+            "name": "Cake",
+            "ppu": 0.55,
+            "batters":
+            {
+                "batter":
+                        [
+                            { "id": "1001", "type": "Regular" },
+                            { "id": "1002", "type": "Chocolate" },
+                            { "id": "1003", "type": "Blueberry" },
+                            { "id": "1004", "type": "Devil's Food" }
+                        ]
+            },
+            "topping":
+                    [
+                        { "id": "5001", "type": "None" },
+                        { "id": "5002", "type": "Glazed" },
+                        { "id": "5005", "type": "Sugar" },
+                        { "id": "5007", "type": "Powdered Sugar" },
+                        { "id": "5006", "type": "Chocolate with Sprinkles" },
+                        { "id": "5003", "type": "Chocolate" },
+                        { "id": "5004", "type": "Maple" }
+                    ]
+        },
+        {
+            "id": "0002",
+            "type": "donut",
+            "name": "Raised",
+            "ppu": 0.55,
+            "batters":
+            {
+                "batter":
+                        [
+                            { "id": "1001", "type": "Regular" }
+                        ]
+            },
+            "topping":
+                    [
+                        { "id": "5001", "type": "None" },
+                        { "id": "5002", "type": "Glazed" },
+                        { "id": "5005", "type": "Sugar" },
+                        { "id": "5003", "type": "Chocolate" },
+                        { "id": "5004", "type": "Maple" }
+                    ]
+        },
+        {
+            "id": "0003",
+            "type": "donut",
+            "name": "Old Fashioned",
+            "ppu": 0.55,
+            "batters":
+            {
+                "batter":
+                        [
+                            { "id": "1001", "type": "Regular" },
+                            { "id": "1002", "type": "Chocolate" }
+                        ]
+            },
+            "topping":
+                    [
+                        { "id": "5001", "type": "None" },
+                        { "id": "5002", "type": "Glazed" },
+                        { "id": "5003", "type": "Chocolate" },
+                        { "id": "5004", "type": "Maple" }
+                    ]
+        }
+    ],
+    {"markers": [
+        {
+
+            "homeTeam":"Lawrence Library",
+            "awayTeam":"LUGip",
+            "markerImage":"images/red.png",
+            "information": "Linux users group meets second Wednesday of each month.",
+            "fixture":"Wednesday 7pm",
+            "capacity":"",
+            "previousScore":""
+        },
+        {
+            "homeTeam":"Hamilton Library",
+            "awayTeam":"LUGip HW SIG",
+            "markerImage":"images/white.png",
+            "information": "Linux users can meet the first Tuesday of the month to work out harward and configuration issues.",
+            "fixture":"Tuesday 7pm",
+            "capacity":"",
+            "tv":""
+        },
+        {
+            "homeTeam":"Applebees",
+            "awayTeam":"After LUPip Mtg Spot",
+            "markerImage":"images/newcastle.png",
+            "information": "Some of us go there after the main LUGip meeting, drink brews, and talk.",
+            "fixture":"Wednesday whenever",
+            "capacity":"2 to 4 pints",
+            "tv":""
+        }
+    ] },
+    {
+        "colorsArray":[{
+            "colorName":"red",
+            "hexValue":"#f00"
+        },
+            {
+                "colorName":"green",
+                "hexValue":"#0f0"
+            },
+            {
+                "colorName":"blue",
+                "hexValue":"#00f"
+            },
+            {
+                "colorName":"cyan",
+                "hexValue":"#0ff"
+            },
+            {
+                "colorName":"magenta",
+                "hexValue":"#f0f"
+            },
+            {
+                "colorName":"yellow",
+                "hexValue":"#ff0"
+            },
+            {
+                "colorName":"black",
+                "hexValue":"#000"
+            }
+        ]
+    },
+    {"results":[
+
+        {"text":"@twitterapi  http://tinyurl.com/ctrefg",
+
+            "to_user_id":396524,
+
+            "to_user":"TwitterAPI",
+
+            "from_user":"jkoum",
+
+            "metadata":
+
+            {
+
+                "result_type":"popular",
+
+                "recent_retweets": 109
+
+
+
+            },
+
+            "id":1478555574,
+
+            "from_user_id":1833773,
+
+            "iso_language_code":"nl",
+
+            "source":"<a href='http://twitter.com/'>twitter< /a>",
+
+            "profile_image_url":"http://s3.amazonaws.com/twitter_production/profile_images/118412707/2522215727_a5f07da155_b_normal.jpg",
+
+            "created_at":"Wed, 08 Apr 2009 19:22:10 +0000"}
+    ],
+
+        "since_id":0,
+
+        "max_id":1480307926,
+
+        "refresh_url":"?since_id=1480307926&amp;q=%40twitterapi",
+
+        "results_per_page":15,
+
+        "next_page":"?page=2&amp;max_id=1480307926&amp;q=%40twitterapi",
+
+        "completed_in":0.031704,
+
+        "page":1,
+
+        "query":"%40twitterapi"
+
+    },
+    {
+        "data": [
+            {
+                "id": "X999_Y999",
+                "from": {
+                    "name": "Tom Brady", "id": "X12"
+                },
+                "message": "Looking forward to 2010!",
+                "actions": [
+                    {
+                        "name": "Comment",
+                        "link": "http://www.facebook.com/X999/posts/Y999"
+                    },
+                    {
+                        "name": "Like",
+                        "link": "http://www.facebook.com/X999/posts/Y999"
+                    }
+                ],
+                "type": "status",
+                "created_time": "2010-08-02T21:27:44+0000",
+                "updated_time": "2010-08-02T21:27:44+0000"
+            },
+            {
+                "id": "X998_Y998",
+                "from": {
+                    "name": "Peyton Manning", "id": "X18"
+                },
+                "message": "Where's my contract?",
+                "actions": [
+                    {
+                        "name": "Comment",
+                        "link": "http://www.facebook.com/X998/posts/Y998"
+                    },
+                    {
+                        "name": "Like",
+                        "link": "http://www.facebook.com/X998/posts/Y998"
+                    }
+                ],
+                "type": "status",
+                "created_time": "2010-08-02T21:27:44+0000",
+                "updated_time": "2010-08-02T21:27:44+0000"
+            }
+        ]
+    },
+    {
+        "title": "Talk On Travel Pool",
+        "link": "http://www.flickr.com/groups/talkontravel/pool/",
+        "description": "Travel and vacation photos from around the world.",
+        "modified": "2009-02-02T11:10:27Z",
+        "generator": "http://www.flickr.com/",
+        "items": [
+            {
+                "title": "View from the hotel",
+                "link": "http://www.flickr.com/photos/33112458@N08/3081564649/in/pool-998875@N22",
+                "media": {"m":"http://farm4.static.flickr.com/3037/3081564649_4a6569750c_m.jpg"},
+                "date_taken": "2008-12-04T04:43:03-08:00",
+                "description": "<p><a href='http://www.flickr.com/people/33112458@N08/'> Talk On Travel< /a> has added a photo to the pool:< /p> <p><a href='http:// www.flickr.com/photos/33112458@N08/3081564649/' title='View from the hotel'> <img src='http://farm4.static.flickr.com/3037/3081564649_4a6569750c_m.jpg' width='240' height='180' alt='View from the hotel' />< /a>< /p> ",
+                "published": "2008-12-04T12:43:03Z",
+                "author": "nobody@flickr.com (Talk On Travel)",
+                "author_id": "33112458@N08",
+                "tags": "spain dolphins tenerife canaries lagomera aqualand playadelasamericas junglepark losgigantos loscristines talkontravel"
+            }
+        ]
+    },
+    {"apiVersion":"2.0",
+        "data":{
+            "updated":"2010-01-07T19:58:42.949Z",
+            "totalItems":800,
+            "startIndex":1,
+            "itemsPerPage":1,
+            "items":[
+                {"id":"hYB0mn5zh2c",
+                    "uploaded":"2007-06-05T22:07:03.000Z",
+                    "updated":"2010-01-07T13:26:50.000Z",
+                    "uploader":"GoogleDeveloperDay",
+                    "category":"News",
+                    "title":"Google Developers Day US - Maps API Introduction",
+                    "description":"Google Maps API Introduction ...",
+                    "tags":[
+                        "GDD07","GDD07US","Maps"
+                    ],
+                    "thumbnail":{
+                        "default":"http://i.ytimg.com/vi/hYB0mn5zh2c/default.jpg",
+                        "hqDefault":"http://i.ytimg.com/vi/hYB0mn5zh2c/hqdefault.jpg"
+                    },
+                    "player":{
+                        "default":"http://www.youtube.com/watch?vu003dhYB0mn5zh2c"
+                    },
+                    "content":{
+                        "1":"rtsp://v5.cache3.c.youtube.com/CiILENy.../0/0/0/video.3gp",
+                        "5":"http://www.youtube.com/v/hYB0mn5zh2c?f...",
+                        "6":"rtsp://v1.cache1.c.youtube.com/CiILENy.../0/0/0/video.3gp"
+                    },
+                    "duration":2840,
+                    "aspectRatio":"widescreen",
+                    "rating":4.63,
+                    "ratingCount":68,
+                    "viewCount":220101,
+                    "favoriteCount":201,
+                    "commentCount":22,
+                    "status":{
+                        "value":"restricted",
+                        "reason":"limitedSyndication"
+                    },
+                    "accessControl":{
+                        "syndicate":"allowed",
+                        "commentVote":"allowed",
+                        "rate":"allowed",
+                        "list":"allowed",
+                        "comment":"allowed",
+                        "embed":"allowed",
+                        "videoRespond":"moderated"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "menu": {
+            "header": "xProgress SVG Viewer",
+            "items": [
+                {
+                    "id": "Open"
+                },
+                {
+                    "id": "OpenNew",
+                    "label": "Open New"
+                },
+                null,
+                {
+                    "id": "ZoomIn",
+                    "label": "Zoom In"
+                },
+                {
+                    "id": "ZoomOut",
+                    "label": "Zoom Out"
+                },
+                {
+                    "id": "OriginalView",
+                    "label": "Original View"
+                },
+                null,
+                {
+                    "id": "Quality"
+                },
+                {
+                    "id": "Pause"
+                },
+                {
+                    "id": "Mute"
+                },
+                null,
+                {
+                    "id": "Find",
+                    "label": "Find..."
+                },
+                {
+                    "id": "FindAgain",
+                    "label": "Find Again"
+                },
+                {
+                    "id": "Copy"
+                },
+                {
+                    "id": "CopyAgain",
+                    "label": "Copy Again"
+                },
+                {
+                    "id": "CopySVG",
+                    "label": "Copy SVG"
+                },
+                {
+                    "id": "ViewSVG",
+                    "label": "View SVG"
+                },
+                {
+                    "id": "ViewSource",
+                    "label": "View Source"
+                },
+                {
+                    "id": "SaveAs",
+                    "label": "Save As"
+                },
+                null,
+                {
+                    "id": "Help"
+                },
+                {
+                    "id": "About",
+                    "label": "About xProgress CVG Viewer..."
+                }
+            ]
+        }
+    },
+    {
+        "uri": "/asdasd/sgsgfg/",
+        "method": "PUT",
+        "request" : {
+            headers : {
+                "x-request-id": "%XLJJ",
+                "x-service": "ffff"
+            },
+            body: {
+                "gateId": "942384",
+                "coordinates": [{
+                    "longitude": 9.13123123,
+                    "latitude": 47.23424234
+                },
+                    {
+                        "longitude": 9.13123123,
+                        "latitude": 47.23424234
+                    },
+                    {
+                        "longitude": 9.13123123,
+                        "latitude": 47.23424234
+                    },
+                    {
+                        "longitude": 9.13123123,
+                        "latitude": 47.23424234
+                    },
+                    {
+                        "longitude": 9.13123123,
+                        "latitude": 47.23424234
+                    },
+                    {
+                        deep: {
+                            deep: {
+                                deep: {
+                                    deep: {
+                                        deep: {
+                                            "hello": "world"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                ]
+            }
+        },
+        "response": {
+            "headers": {}
+        }
+    },
+    {
+        "id": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "description": "Core schema meta-schema",
+        "definitions": {
+            "schemaArray": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "$ref": "#" }
+            },
+            "positiveInteger": {
+                "type": "integer",
+                "minimum": 0
+            },
+            "positiveIntegerDefault0": {
+                "allOf": [ { "$ref": "#/definitions/positiveInteger" }, { "default": 0 } ]
+            },
+            "simpleTypes": {
+                "enum": [ "array", "boolean", "integer", "null", "number", "object", "string" ]
+            },
+            "stringArray": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1,
+                "uniqueItems": true
+            }
+        },
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string",
+                "format": "uri"
+            },
+            "$schema": {
+                "type": "string",
+                "format": "uri"
+            },
+            "title": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "default": {},
+            "multipleOf": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMinimum": true
+            },
+            "maximum": {
+                "type": "number"
+            },
+            "exclusiveMaximum": {
+                "type": "boolean",
+                "default": false
+            },
+            "minimum": {
+                "type": "number"
+            },
+            "exclusiveMinimum": {
+                "type": "boolean",
+                "default": false
+            },
+            "maxLength": { "$ref": "#/definitions/positiveInteger" },
+            "minLength": { "$ref": "#/definitions/positiveIntegerDefault0" },
+            "pattern": {
+                "type": "string",
+                "format": "regex"
+            },
+            "additionalItems": {
+                "anyOf": [
+                    { "type": "boolean" },
+                    { "$ref": "#" }
+                ],
+                "default": {}
+            },
+            "items": {
+                "anyOf": [
+                    { "$ref": "#" },
+                    { "$ref": "#/definitions/schemaArray" }
+                ],
+                "default": {}
+            },
+            "maxItems": { "$ref": "#/definitions/positiveInteger" },
+            "minItems": { "$ref": "#/definitions/positiveIntegerDefault0" },
+            "uniqueItems": {
+                "type": "boolean",
+                "default": false
+            },
+            "maxProperties": { "$ref": "#/definitions/positiveInteger" },
+            "minProperties": { "$ref": "#/definitions/positiveIntegerDefault0" },
+            "required": { "$ref": "#/definitions/stringArray" },
+            "additionalProperties": {
+                "anyOf": [
+                    { "type": "boolean" },
+                    { "$ref": "#" }
+                ],
+                "default": {}
+            },
+            "definitions": {
+                "type": "object",
+                "additionalProperties": { "$ref": "#" },
+                "default": {}
+            },
+            "properties": {
+                "type": "object",
+                "additionalProperties": { "$ref": "#" },
+                "default": {}
+            },
+            "patternProperties": {
+                "type": "object",
+                "additionalProperties": { "$ref": "#" },
+                "default": {}
+            },
+            "dependencies": {
+                "type": "object",
+                "additionalProperties": {
+                    "anyOf": [
+                        { "$ref": "#" },
+                        { "$ref": "#/definitions/stringArray" }
+                    ]
+                }
+            },
+            "enum": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true
+            },
+            "type": {
+                "anyOf": [
+                    { "$ref": "#/definitions/simpleTypes" },
+                    {
+                        "type": "array",
+                        "items": { "$ref": "#/definitions/simpleTypes" },
+                        "minItems": 1,
+                        "uniqueItems": true
+                    }
+                ]
+            },
+            "allOf": { "$ref": "#/definitions/schemaArray" },
+            "anyOf": { "$ref": "#/definitions/schemaArray" },
+            "oneOf": { "$ref": "#/definitions/schemaArray" },
+            "not": { "$ref": "#" }
+        },
+        "dependencies": {
+            "exclusiveMaximum": [ "maximum" ],
+            "exclusiveMinimum": [ "minimum" ]
+        },
+        "default": {}
+    }
+
+]
+</script>
 </body>
 </html>
