@@ -1,6 +1,6 @@
 <html>
-  <head><title>prettyson</title>
-  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <head>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script>
     function prettyson(element, obj, depth, name, first, sep) {
         function roundPrevious(element, depth) {
@@ -51,7 +51,7 @@
                 box.addClass("prettyson-sep");
             }
             var firstNow = true;
-            if(Array.isArray(obj)) {
+            if(obj instanceof Array) {
               $.each(obj, function(k,v) {
                 prettyson(element, v, depth+1, null, name && firstNow, false);
                 firstNow = false;
